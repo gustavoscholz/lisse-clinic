@@ -6531,7 +6531,7 @@ h3 {
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   justify-content: stretch !important;
-  column-gap: 0 !important;
+  column-gap: 12px !important;
   box-sizing: border-box;
   padding-inline-start: 9px !important;
   padding-inline-end: 12px !important;
@@ -6558,9 +6558,9 @@ h3 {
 
 .brand-cta > .brand-cta__label {
   min-width: 0;
-  padding-inline: 10px 8px;
+  padding: 0;
   line-height: 1.2;
-  text-align: center;
+  text-align: left;
   white-space: nowrap;
 }
 
@@ -6571,7 +6571,7 @@ h3 {
   }
 
   .brand-cta > .brand-cta__label {
-    padding-inline: 8px 6px;
+    padding: 0;
   }
 }
 
