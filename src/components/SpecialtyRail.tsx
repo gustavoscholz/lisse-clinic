@@ -3,12 +3,17 @@ import separatorMark from '../assets/hero/separator-mark.png'
 type SpecialtyRailProps = {
   items: readonly string[]
   reveal?: boolean
+  variant?: 'default' | 'hero'
 }
 
-export function SpecialtyRail({ items, reveal = false }: SpecialtyRailProps) {
+export function SpecialtyRail({
+  items,
+  reveal = false,
+  variant = 'default',
+}: SpecialtyRailProps) {
   return (
     <div
-      className="specialty-rail"
+      className={`specialty-rail specialty-rail--${variant}`}
       aria-label="Especialidades"
       data-reveal={reveal ? 'fade' : undefined}
     >

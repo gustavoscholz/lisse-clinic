@@ -2,8 +2,8 @@ import clinicBackground from '../assets/hero/clinic-background.png'
 import backgroundMark from '../assets/hero/background-mark.png'
 import brandMark from '../assets/hero/brand-mark.svg'
 import harmonizationMedallion from '../assets/hero/harmonization-medallion.png'
-import professionals from '../assets/hero/professionals.png'
-import { specialties, type SiteMode } from '../data/site'
+import kellyPortrait from '../assets/hero/kelly-portrait.jpg'
+import { externalLinks, specialties, type SiteMode } from '../data/site'
 import { specialtyPages } from '../data/specialtyPages'
 import { Header } from './Header'
 import { SpecialtyRail } from './SpecialtyRail'
@@ -22,7 +22,7 @@ export function Hero({ mode, onNavigate }: HeroProps) {
   return (
     <section
       id="inicio"
-      className={`hero${specialtyMode ? ` hero--specialty hero--${specialtyMode}` : ''}`}
+      className={`hero hero--${mode}${specialtyMode ? ' hero--specialty' : ' hero--home'}`}
       aria-labelledby="hero-title"
     >
       <Header activeMode={mode} onNavigate={onNavigate} />
@@ -50,7 +50,9 @@ export function Hero({ mode, onNavigate }: HeroProps) {
               <img className="hero__clinic" src={clinicBackground} alt="" />
               <div className="hero__clinic-fade" />
               <img className="hero__background-mark" src={backgroundMark} alt="" />
-              <img className="hero__professionals" src={professionals} alt="" />
+              <div className="hero__kelly-frame">
+                <img className="hero__kelly" src={kellyPortrait} alt="" />
+              </div>
             </>
           )}
         </div>
@@ -70,22 +72,31 @@ export function Hero({ mode, onNavigate }: HeroProps) {
             </>
           ) : (
             <>
-              <p className="eyebrow">Lisse Clinic | Belo Horizonte</p>
+              <p className="eyebrow hero__location-signature">
+                <span>Lisse Clinic</span>
+                <i aria-hidden="true" />
+                <span>Belo Horizonte</span>
+              </p>
               <h1 id="hero-title">
-                <span>Suas beleza, com</span>
+                <span>Sua beleza, com</span>
                 <span>cuidado e exclusividade.</span>
               </h1>
               <p className="hero__description">
-                Protocolos personalizados para rosto, corpo, saúde e bem estar,
+                Protocolos personalizados para rosto, corpo, saúde e bem-estar,
                 conduzidos por uma equipe multiprofissional
               </p>
             </>
           )}
 
           <div className="hero__actions" aria-label="Ações principais">
-            <span className="button button--primary" aria-disabled="true">
+            <a
+              className="button button--primary"
+              href={externalLinks.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+            >
               Agendar avaliação
-            </span>
+            </a>
             {specialtyConfig ? (
               <a className="button button--link" href="#procedimentos">
                 Conhecer tratamentos
@@ -99,7 +110,7 @@ export function Hero({ mode, onNavigate }: HeroProps) {
         </div>
       </div>
 
-      <SpecialtyRail items={specialties} />
+      <SpecialtyRail items={specialties} variant="hero" />
 
       {!specialtyConfig && (
         <div className="hero__mark-mobile" aria-hidden="true">
