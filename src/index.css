@@ -4523,14 +4523,20 @@ h3 {
   width: 36px;
   height: 36px;
   place-items: center;
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.38);
   border-radius: 50%;
+  line-height: 0;
 }
 
 .information-location__icon img {
+  display: block;
   width: 17px;
   height: 17px;
+  place-self: center;
+  margin: auto;
   object-fit: contain;
+  object-position: center;
 }
 
 .information-location__detail p,
@@ -6531,7 +6537,7 @@ h3 {
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   justify-content: stretch !important;
-  column-gap: 12px !important;
+  column-gap: 16px !important;
   box-sizing: border-box;
   padding-inline-start: 9px !important;
   padding-inline-end: 12px !important;
