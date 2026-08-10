@@ -235,8 +235,26 @@ h3 {
   width: clamp(610px, 43vw, 820px);
   height: calc(100% - 86px);
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 88%) 8%, #000 16%);
-  mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 88%) 8%, #000 16%);
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(0 0 0 / 88%) 8%,
+    #000 16%,
+    #000 80%,
+    rgb(0 0 0 / 92%) 86%,
+    rgb(0 0 0 / 42%) 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(0 0 0 / 88%) 8%,
+    #000 16%,
+    #000 80%,
+    rgb(0 0 0 / 92%) 86%,
+    rgb(0 0 0 / 42%) 94%,
+    transparent 100%
+  );
   animation: hero-portrait-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
