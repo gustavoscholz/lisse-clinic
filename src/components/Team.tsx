@@ -227,16 +227,16 @@ export function Team() {
         </div>
 
         <a
-          className="team-section__cta"
+          className="team-section__cta brand-cta"
           href={externalLinks.whatsapp}
           target="_blank"
           rel="noreferrer"
           data-reveal="up"
         >
-          <span className="team-section__cta-mark" aria-hidden="true">
+          <span className="team-section__cta-mark brand-cta__mark" aria-hidden="true">
             <img src={brandMark} alt="" />
           </span>
-          Desejo agendar minha consulta
+          <span className="brand-cta__label">Desejo agendar minha consulta</span>
         </a>
       </div>
     </section>

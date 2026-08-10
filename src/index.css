@@ -4583,7 +4583,7 @@ h3 {
   font-weight: 500;
 }
 
-.information-location__maps-link > span {
+.information-location__maps-link > .brand-cta__mark {
   display: grid;
   width: 36px;
   height: 36px;
@@ -5094,7 +5094,7 @@ h3 {
   filter: brightness(1.06);
 }
 
-.site-footer__whatsapp > span {
+.site-footer__whatsapp > .brand-cta__mark {
   display: grid;
   width: 36px;
   height: 36px;
@@ -6522,6 +6522,56 @@ h3 {
   .results-section__marquees {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px 10px;
+  }
+}
+
+/* Shared geometry for every CTA that carries the Lisse seal. */
+.brand-cta {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  justify-content: stretch !important;
+  column-gap: 0 !important;
+  box-sizing: border-box;
+  padding-inline-start: 9px !important;
+  padding-inline-end: 12px !important;
+}
+
+.brand-cta > .brand-cta__mark {
+  display: grid;
+  place-items: center;
+  place-self: center start;
+  overflow: hidden;
+  margin: 0;
+}
+
+.brand-cta > .brand-cta__mark img {
+  display: block;
+  width: auto !important;
+  height: 70% !important;
+  max-width: 54%;
+  max-height: 72%;
+  margin: auto;
+  object-fit: contain;
+  object-position: 50% 50%;
+}
+
+.brand-cta > .brand-cta__label {
+  min-width: 0;
+  padding-inline: 10px 8px;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .brand-cta {
+    padding-inline-start: 7px !important;
+    padding-inline-end: 9px !important;
+  }
+
+  .brand-cta > .brand-cta__label {
+    padding-inline: 8px 6px;
   }
 }
 

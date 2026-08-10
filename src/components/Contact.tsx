@@ -32,15 +32,15 @@ export function Contact() {
         </p>
 
         <a
-          className="contact-section__cta"
+          className="contact-section__cta brand-cta"
           href={externalLinks.whatsapp}
           target="_blank"
           rel="noreferrer"
         >
-          <span className="contact-section__cta-mark" aria-hidden="true">
+          <span className="contact-section__cta-mark brand-cta__mark" aria-hidden="true">
             <img src={brandMark} alt="" />
           </span>
-          Agendar avaliação pelo WhatsApp
+          <span className="brand-cta__label">Agendar avaliação pelo WhatsApp</span>
         </a>
 
         <p className="contact-section__note">

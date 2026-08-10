@@ -144,16 +144,16 @@ export function Results() {
         </div>
 
         <a
-          className="results-section__cta"
+          className="results-section__cta brand-cta"
           href={externalLinks.whatsapp}
           target="_blank"
           rel="noreferrer"
           data-reveal="up"
         >
-          <span className="results-section__cta-mark" aria-hidden="true">
+          <span className="results-section__cta-mark brand-cta__mark" aria-hidden="true">
             <img src={brandMark} alt="" />
           </span>
-          Agendar avaliação
+          <span className="brand-cta__label">Agendar avaliação</span>
         </a>
       </div>
     </section>

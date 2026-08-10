@@ -65,15 +65,15 @@ export function Treatments({ onNavigate }: TreatmentsProps) {
             <p>Agende uma avaliação e receba uma orientação personalizada.</p>
           </div>
           <a
-            className="treatments-section__cta-button"
+            className="treatments-section__cta-button brand-cta"
             href={externalLinks.whatsapp}
             target="_blank"
             rel="noreferrer"
           >
-            <span className="treatments-section__cta-mark" aria-hidden="true">
+            <span className="treatments-section__cta-mark brand-cta__mark" aria-hidden="true">
               <img src={brandMark} alt="" />
             </span>
-            Desejo tirar dúvidas via WhatsApp
+            <span className="brand-cta__label">Desejo tirar dúvidas via WhatsApp</span>
           </a>
         </div>
       </div>

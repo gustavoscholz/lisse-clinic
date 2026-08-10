@@ -150,15 +150,15 @@ export function Information() {
             </div>
 
             <a
-              className="information-location__maps-link"
+              className="information-location__maps-link brand-cta"
               href={externalLinks.googleMaps}
               target="_blank"
               rel="noreferrer"
             >
-              <span aria-hidden="true">
+              <span className="brand-cta__mark" aria-hidden="true">
                 <img src={brandMark} alt="" />
               </span>
-              Endereço Google Maps
+              <span className="brand-cta__label">Endereço Google Maps</span>
             </a>
 
             <div className="information-location__map">

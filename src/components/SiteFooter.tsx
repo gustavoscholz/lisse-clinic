@@ -124,15 +124,15 @@ export function SiteFooter({ activeMode, onNavigate }: SiteFooterProps) {
               (31) 9999-9999
             </p>
             <a
-              className="site-footer__whatsapp"
+              className="site-footer__whatsapp brand-cta"
               href={externalLinks.whatsapp}
               target="_blank"
               rel="noreferrer"
             >
-              <span aria-hidden="true">
+              <span className="brand-cta__mark" aria-hidden="true">
                 <img src={brandMark} alt="" />
               </span>
-              Atendimento via WhatsApp
+              <span className="brand-cta__label">Atendimento via WhatsApp</span>
             </a>
           </div>
         </div>

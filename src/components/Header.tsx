@@ -58,11 +58,11 @@ export function Header({ activeMode, onNavigate }: HeaderProps) {
           ))}
         </nav>
 
-        <span className="contact-pill" aria-disabled="true">
-          <span className="contact-pill__mark" aria-hidden="true">
+        <span className="contact-pill brand-cta" aria-disabled="true">
+          <span className="contact-pill__mark brand-cta__mark" aria-hidden="true">
             <img src={brandMark} alt="" />
           </span>
-          Entre em contato
+          <span className="brand-cta__label">Entre em contato</span>
         </span>
 
         <button

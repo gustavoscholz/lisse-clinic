@@ -84,6 +84,8 @@ export function Reviews() {
   const dragStateRef = useRef<DragState | null>(null)
   const scrollFrameRef = useRef<number | null>(null)
   const normalizationTimerRef = useRef<number | null>(null)
+  const normalizationFrameRef = useRef<number | null>(null)
+  const isNormalizingRef = useRef(false)
   const physicalIndexRef = useRef(
     reviews.length * REVIEW_LOOP_MIDDLE_COPY + INITIAL_REVIEW_INDEX,
   )
@@ -177,6 +179,9 @@ export function Reviews() {
       if (normalizationTimerRef.current !== null) {
         window.clearTimeout(normalizationTimerRef.current)
       }
+      if (normalizationFrameRef.current !== null) {
+        window.cancelAnimationFrame(normalizationFrameRef.current)
+      }
     },
     [],
   )
@@ -204,7 +209,7 @@ export function Reviews() {
   const normalizeLoopPosition = useCallback(() => {
     const viewport = viewportRef.current
     const physicalIndex = physicalIndexRef.current
-    if (!viewport || dragStateRef.current) return
+    if (!viewport || isNormalizingRef.current) return
 
     let normalizedIndex = physicalIndex
     if (physicalIndex < reviews.length) {
@@ -222,11 +227,26 @@ export function Reviews() {
     const normalizedSlide = slides[normalizedIndex]
     if (!currentSlide || !normalizedSlide) return
 
-    viewport.scrollLeft += normalizedSlide.offsetLeft - currentSlide.offsetLeft
+    const previousInlineBehavior = viewport.style.scrollBehavior
+    isNormalizingRef.current = true
+    const offsetDelta = normalizedSlide.offsetLeft - currentSlide.offsetLeft
+    viewport.style.scrollBehavior = 'auto'
+    viewport.scrollLeft += offsetDelta
+    if (dragStateRef.current) {
+      dragStateRef.current.startScrollLeft += offsetDelta
+    }
     physicalIndexRef.current = normalizedIndex
+
+    normalizationFrameRef.current = window.requestAnimationFrame(() => {
+      viewport.style.scrollBehavior = previousInlineBehavior
+      isNormalizingRef.current = false
+      normalizationFrameRef.current = null
+    })
   }, [])
 
   const handleScroll = () => {
+    if (isNormalizingRef.current) return
+
     if (scrollFrameRef.current !== null) {
       window.cancelAnimationFrame(scrollFrameRef.current)
     }
@@ -244,7 +264,10 @@ export function Reviews() {
 
       if (!dragStateRef.current) {
         normalizationTimerRef.current = window.setTimeout(
-          normalizeLoopPosition,
+          () => {
+            normalizationTimerRef.current = null
+            normalizeLoopPosition()
+          },
           140,
         )
       }
@@ -274,6 +297,9 @@ export function Reviews() {
     event.preventDefault()
     event.currentTarget.scrollLeft =
       dragState.startScrollLeft - (event.clientX - dragState.startX)
+
+    physicalIndexRef.current = findNearestSlide()
+    normalizeLoopPosition()
   }
 
   const finishPointerDrag = (event: PointerEvent<HTMLDivElement>) => {
@@ -400,16 +426,16 @@ export function Reviews() {
         </p>
 
         <a
-          className="reviews-section__cta"
+          className="reviews-section__cta brand-cta"
           href={externalLinks.whatsapp}
           target="_blank"
           rel="noreferrer"
           data-reveal="up"
         >
-          <span className="reviews-section__cta-mark" aria-hidden="true">
+          <span className="reviews-section__cta-mark brand-cta__mark" aria-hidden="true">
             <img src={brandMark} alt="" />
           </span>
-          Desejo agendar minha consulta
+          <span className="brand-cta__label">Desejo agendar minha consulta</span>
         </a>
       </div>
     </section>

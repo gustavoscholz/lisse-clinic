@@ -139,11 +139,11 @@ export function AboutClinic() {
                 </p>
               </div>
 
-              <a className="about-clinic__button" href="#tratamentos">
-                <span className="about-clinic__button-mark" aria-hidden="true">
+              <a className="about-clinic__button brand-cta" href="#tratamentos">
+                <span className="about-clinic__button-mark brand-cta__mark" aria-hidden="true">
                   <img src={brandMark} alt="" />
                 </span>
-                <span>Conheça os nossos tratamentos</span>
+                <span className="brand-cta__label">Conheça os nossos tratamentos</span>
               </a>
             </div>
           </div>
