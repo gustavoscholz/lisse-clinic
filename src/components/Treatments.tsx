@@ -26,7 +26,7 @@ export function Treatments({ onNavigate }: TreatmentsProps) {
       className="treatments-section"
       aria-labelledby="treatments-title"
     >
-      <SpecialtyRail items={treatmentSpecialties} reveal />
+      <SpecialtyRail items={treatmentSpecialties} reveal variant="hero" />
 
       <div className="treatments-section__decor" aria-hidden="true">
         <img className="treatments-section__ring treatments-section__ring--left" src={decorRingLeft} alt="" />
