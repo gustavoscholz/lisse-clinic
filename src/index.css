@@ -200,21 +200,21 @@ h3 {
   height: calc(100% + 195px);
   object-fit: cover;
   object-position: center 27%;
-  opacity: 0.48;
-  filter: saturate(0.7) contrast(0.9) brightness(1.07) blur(0.6px);
+  opacity: 0.34;
+  filter: saturate(0.58) contrast(0.82) brightness(1.1) blur(0.8px);
   transform: scale(1.006);
 }
 
 .hero__clinic-fade {
   z-index: -4;
   background:
-    linear-gradient(90deg, var(--cream) 3%, rgb(243 238 230 / 98%) 31%, rgb(243 238 230 / 44%) 58%, rgb(243 238 230 / 16%) 100%),
-    linear-gradient(180deg, rgb(243 238 230 / 10%) 45%, rgb(243 238 230 / 76%) 92%, var(--cream) 100%);
+    linear-gradient(90deg, var(--cream) 3%, rgb(243 238 230 / 99%) 34%, rgb(243 238 230 / 57%) 62%, rgb(243 238 230 / 24%) 100%),
+    linear-gradient(180deg, rgb(243 238 230 / 16%) 42%, rgb(243 238 230 / 82%) 92%, var(--cream) 100%);
 }
 
 .hero__background-mark {
   position: absolute;
-  z-index: -2;
+  z-index: 4;
   top: -4%;
   right: -1%;
   width: auto;
@@ -222,8 +222,9 @@ h3 {
   height: 112%;
   object-fit: contain;
   object-position: right center;
-  opacity: 0.16;
-  filter: saturate(0.72);
+  opacity: 0.34;
+  filter: saturate(0.82);
+  pointer-events: none;
 }
 
 .hero__kelly-frame {
@@ -234,28 +235,46 @@ h3 {
   width: clamp(610px, 43vw, 820px);
   height: calc(100% - 86px);
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 42%) 15%, #000 36%);
-  mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 42%) 15%, #000 36%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 88%) 8%, #000 16%);
+  mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 88%) 8%, #000 16%);
   animation: hero-portrait-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+.hero__kelly-frame::before,
 .hero__kelly-frame::after {
   position: absolute;
+  z-index: 1;
   inset: 0;
   content: "";
-  background:
-    linear-gradient(90deg, rgb(243 238 230 / 72%) 0%, transparent 34%),
-    linear-gradient(180deg, rgb(243 238 230 / 8%) 55%, rgb(243 238 230 / 28%) 100%);
   pointer-events: none;
 }
 
+.hero__kelly-frame::before {
+  background: radial-gradient(
+    ellipse 44% 48% at 52% 39%,
+    rgb(255 251 243 / 22%) 0%,
+    rgb(255 251 243 / 8%) 48%,
+    transparent 76%
+  );
+  mix-blend-mode: screen;
+}
+
+.hero__kelly-frame::after {
+  z-index: 2;
+  background:
+    linear-gradient(90deg, rgb(243 238 230 / 32%) 0%, transparent 18%),
+    linear-gradient(180deg, transparent 82%, rgb(243 238 230 / 8%) 100%);
+}
+
 .hero__kelly {
+  position: relative;
+  z-index: 0;
   width: 100%;
   max-width: none;
   height: 100%;
   object-fit: cover;
   object-position: 52% 52%;
-  filter: saturate(0.86) contrast(0.94) brightness(1.035);
+  filter: saturate(0.98) contrast(1.08) brightness(1.065);
   transform: scale(1.28);
   transform-origin: 52% 62%;
 }
@@ -282,23 +301,31 @@ h3 {
   display: inline-flex;
   align-items: center;
   margin-bottom: 24px;
-  gap: 10px;
-  letter-spacing: 0.075em;
+  gap: 16px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
 }
 
-.hero__location-signature::before {
+.hero__location-mark {
+  position: relative;
+  display: grid;
   width: 30px;
-  height: 1px;
-  content: "";
-  background: linear-gradient(90deg, transparent, var(--gold));
+  height: 30px;
+  flex: 0 0 30px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 46%);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #b59670, #947552);
+  box-shadow:
+    0 0 0 0 rgb(161 132 98 / 24%),
+    inset 0 1px 0 rgb(255 255 255 / 26%);
+  animation: hero-signature-halo 4.8s ease-in-out infinite;
 }
 
-.hero__location-signature i {
-  width: 5px;
-  height: 5px;
-  flex: 0 0 5px;
-  border: 1px solid var(--gold);
-  transform: rotate(45deg);
+.hero__location-mark img {
+  width: 9px;
+  height: 20px;
+  object-fit: fill;
 }
 
 .hero h1 {
@@ -327,10 +354,17 @@ h3 {
 }
 
 .hero__actions {
+  --hero-action-width: clamp(294px, 17vw, 330px);
   display: flex;
   align-items: center;
   margin-top: 28px;
   gap: 26px;
+}
+
+.hero__actions .button {
+  width: var(--hero-action-width);
+  flex: 0 0 var(--hero-action-width);
+  white-space: nowrap;
 }
 
 .button {
@@ -340,7 +374,7 @@ h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: clamp(294px, 17vw, 330px);
+  width: var(--hero-action-width, clamp(294px, 17vw, 330px));
   height: clamp(64px, 4.2vw, 70px);
   font-size: clamp(1.25rem, 1.25vw, 1.5rem);
   font-weight: 500;
@@ -502,6 +536,21 @@ h3 {
   }
 }
 
+@keyframes hero-signature-halo {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgb(161 132 98 / 20%),
+      inset 0 1px 0 rgb(255 255 255 / 26%);
+  }
+  50% {
+    box-shadow:
+      0 0 0 7px rgb(161 132 98 / 0%),
+      0 5px 15px rgb(161 132 98 / 18%),
+      inset 0 1px 0 rgb(255 255 255 / 34%);
+  }
+}
+
 @keyframes hero-portrait-in {
   from {
     opacity: 0;
@@ -571,8 +620,11 @@ h3 {
   }
 
   .button {
-    width: clamp(235px, 23vw, 294px);
     font-size: 1rem;
+  }
+
+  .hero__actions {
+    --hero-action-width: clamp(235px, 23vw, 294px);
   }
 
   .hero__kelly-frame {
@@ -736,7 +788,7 @@ h3 {
     top: -3%;
     right: -20%;
     height: 103%;
-    opacity: 0.17;
+    opacity: 0.27;
   }
 
   .specialty-rail__track {
@@ -771,6 +823,31 @@ h3 {
   .specialty-rail--hero .specialty-rail__item img {
     width: 48px;
     height: 48px;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1100px) {
+  .hero__actions {
+    display: grid;
+    width: min(100%, 480px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(12px, 1.8vw, 18px);
+  }
+
+  .hero__actions .button {
+    width: 100%;
+    min-width: 0;
+    height: clamp(48px, 6vw, 56px);
+    padding: 0 clamp(10px, 1.5vw, 16px);
+    flex: none;
+    font-size: clamp(0.78rem, 1.65vw, 0.95rem);
+    white-space: nowrap;
+  }
+
+  .hero__actions .button--link::after {
+    right: 15%;
+    bottom: 7px;
+    left: 15%;
   }
 }
 
@@ -833,7 +910,7 @@ h3 {
     width: 430px;
     max-width: none;
     height: auto;
-    opacity: 0.12;
+    opacity: 0.2;
   }
 
   .hero__content {
@@ -851,12 +928,19 @@ h3 {
   .hero__location-signature {
     justify-content: center;
     margin-bottom: 16px;
-    gap: 8px;
-    letter-spacing: 0.065em;
+    gap: 9px;
+    letter-spacing: 0.09em;
   }
 
-  .hero__location-signature::before {
-    width: 20px;
+  .hero__location-mark {
+    width: 24px;
+    height: 24px;
+    flex-basis: 24px;
+  }
+
+  .hero__location-mark img {
+    width: 7px;
+    height: 16px;
   }
 
   .hero h1 {
@@ -875,6 +959,7 @@ h3 {
   }
 
   .hero__actions {
+    --hero-action-width: 210px;
     position: absolute;
     z-index: 12;
     top: 580px;
@@ -888,10 +973,16 @@ h3 {
   }
 
   .button {
-    width: 210px;
+    width: var(--hero-action-width);
     height: 42px;
     padding: 0 15px;
     font-size: 0.78rem;
+  }
+
+  .hero__actions .button {
+    width: var(--hero-action-width);
+    flex: 0 0 42px;
+    white-space: nowrap;
   }
 
   .button--link::after {
@@ -905,15 +996,22 @@ h3 {
     bottom: auto;
     width: 100%;
     height: 548px;
-    -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgb(0 0 0 / 82%) 13%, #000 28%);
-    mask-image: linear-gradient(180deg, transparent 0%, rgb(0 0 0 / 82%) 13%, #000 28%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgb(0 0 0 / 92%) 7%, #000 18%);
+    mask-image: linear-gradient(180deg, transparent 0%, rgb(0 0 0 / 92%) 7%, #000 18%);
     animation-name: hero-kelly-mobile-in;
   }
 
+  .hero__kelly-frame::before {
+    background: radial-gradient(
+      ellipse 54% 42% at 52% 35%,
+      rgb(255 251 243 / 18%) 0%,
+      rgb(255 251 243 / 7%) 50%,
+      transparent 76%
+    );
+  }
+
   .hero__kelly-frame::after {
-    background:
-      linear-gradient(180deg, rgb(243 238 230 / 74%) 0%, transparent 25%),
-      linear-gradient(180deg, transparent 72%, rgb(243 238 230 / 18%) 100%);
+    background: linear-gradient(180deg, transparent 84%, rgb(243 238 230 / 8%) 100%);
   }
 
   .hero__kelly {

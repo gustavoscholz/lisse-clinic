@@ -73,8 +73,10 @@ export function Hero({ mode, onNavigate }: HeroProps) {
           ) : (
             <>
               <p className="eyebrow hero__location-signature">
+                <span className="hero__location-mark" aria-hidden="true">
+                  <img src={brandMark} alt="" />
+                </span>
                 <span>Lisse Clinic</span>
-                <i aria-hidden="true" />
                 <span>Belo Horizonte</span>
               </p>
               <h1 id="hero-title">
