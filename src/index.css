@@ -3258,21 +3258,36 @@ h3 {
 .results-card__watermark {
   position: absolute;
   z-index: 2;
-  bottom: 15px;
+  top: 50%;
   left: 50%;
-  display: grid;
-  width: 30px;
-  height: 52px;
-  place-items: center;
-  opacity: 0.12;
+  display: flex;
+  width: 94px;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.16;
   pointer-events: none;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  gap: 4px;
 }
 
 .results-card__watermark img {
-  width: 24px;
-  height: 52px;
-  object-fit: fill;
+  width: 28px;
+  height: 58px;
+  object-fit: contain;
+  object-position: center;
+}
+
+.results-card__watermark span {
+  color: #fff;
+  font-family: "Cormorant Infant", serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 1px 8px rgb(56 51 47 / 42%);
 }
 
 .results-card__label {
@@ -3395,14 +3410,17 @@ h3 {
   }
 
   .results-card__watermark {
-    bottom: 12px;
-    width: 25px;
-    height: 44px;
+    width: 80px;
+    gap: 3px;
   }
 
   .results-card__watermark img {
-    width: 20px;
-    height: 44px;
+    width: 24px;
+    height: 50px;
+  }
+
+  .results-card__watermark span {
+    font-size: 0.9rem;
   }
 
   .results-card__label {
@@ -3514,14 +3532,18 @@ h3 {
   }
 
   .results-card__watermark {
-    bottom: 9px;
-    width: 21px;
-    height: 36px;
+    width: 68px;
+    gap: 2px;
   }
 
   .results-card__watermark img {
-    width: 17px;
-    height: 36px;
+    width: 20px;
+    height: 42px;
+  }
+
+  .results-card__watermark span {
+    font-size: 0.76rem;
+    letter-spacing: 0.13em;
   }
 
   .results-section__cta {
@@ -3714,7 +3736,7 @@ h3 {
   overscroll-behavior-x: contain;
   scroll-behavior: smooth;
   scroll-padding-inline: calc((100% - 360px) / 2);
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
   scrollbar-width: none;
   touch-action: pan-x pan-y;
   gap: 22px;
@@ -3740,7 +3762,7 @@ h3 {
   width: 360px;
   flex: 0 0 360px;
   scroll-snap-align: center;
-  scroll-snap-stop: always;
+  scroll-snap-stop: normal;
 }
 
 .review-card {
@@ -4222,6 +4244,24 @@ h3 {
 .reviews-summary__link:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+/* Shared brand marks inside circular CTA badges */
+:is(
+  .contact-pill__mark,
+  .about-clinic__button-mark,
+  .treatments-section__cta-mark,
+  .team-section__cta-mark,
+  .results-section__cta-mark,
+  .reviews-section__cta-mark,
+  .contact-section__cta-mark,
+  .information-location__maps-link > span,
+  .site-footer__whatsapp > span
+) img {
+  display: block;
+  margin: auto;
+  object-fit: contain;
+  object-position: center;
 }
 
 /* Information */
@@ -6148,6 +6188,267 @@ h3 {
 
   .harmonization-benefits__shade {
     width: 52px;
+  }
+}
+
+/* Keep every decorative Lisse mark visually complete inside its section. */
+.about-clinic__decor-mark {
+  width: min(900px, 70vw);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.about-clinic__decor-mark--left {
+  top: 18px;
+  right: auto;
+  left: clamp(-260px, -14vw, -140px);
+}
+
+.about-clinic__decor-mark--right {
+  top: 330px;
+  right: clamp(-260px, -14vw, -140px);
+  left: auto;
+}
+
+.treatments-section__mark {
+  width: min(820px, 66vw);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.treatments-section__mark--upper-left {
+  top: 44px;
+  left: clamp(-240px, -13vw, -125px);
+}
+
+.treatments-section__mark--upper-right {
+  top: 570px;
+  right: clamp(-240px, -13vw, -125px);
+}
+
+.treatments-section__mark--lower-left {
+  top: 1510px;
+  left: clamp(-240px, -13vw, -125px);
+}
+
+.treatments-section__mark--lower-right {
+  top: 2030px;
+  right: clamp(-240px, -13vw, -125px);
+}
+
+.team-section__decor-mark {
+  width: min(760px, 66vw);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.team-section__decor-mark--left {
+  top: -24px;
+  left: clamp(-220px, -12vw, -110px);
+}
+
+.team-section__decor-mark--right {
+  top: 52px;
+  right: clamp(-220px, -12vw, -110px);
+}
+
+.results-section__decor-mark {
+  width: min(900px, 70vw);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.results-section__decor-mark--left {
+  top: 22px;
+  left: clamp(-260px, -14vw, -140px);
+}
+
+.results-section__decor-mark--right {
+  top: 580px;
+  right: clamp(-260px, -14vw, -140px);
+}
+
+.reviews-section__decor-mark {
+  width: min(760px, 66vw);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.reviews-section__decor-mark--left {
+  top: -36px;
+  left: clamp(-220px, -12vw, -110px);
+}
+
+.reviews-section__decor-mark--right {
+  top: 110px;
+  right: clamp(-220px, -12vw, -110px);
+}
+
+.information-section__decor-mark {
+  width: min(800px, 68vw);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.information-section__decor-mark--left {
+  top: -28px;
+  left: clamp(-235px, -13vw, -120px);
+}
+
+.information-section__decor-mark--right {
+  top: 350px;
+  right: clamp(-235px, -13vw, -120px);
+}
+
+.contact-section__decor-mark {
+  width: min(320px, 32vw);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.contact-section__decor-mark--left {
+  top: -8px;
+  left: clamp(-95px, -5vw, -48px);
+}
+
+.contact-section__decor-mark--right {
+  top: -4px;
+  right: clamp(-95px, -5vw, -48px);
+}
+
+.harmonization-procedures__mark {
+  width: min(820px, 68vw);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.harmonization-procedures__mark--upper-left {
+  top: 12px;
+  left: clamp(-235px, -13vw, -120px);
+}
+
+.harmonization-procedures__mark--middle-right {
+  top: 430px;
+  right: clamp(-235px, -13vw, -120px);
+}
+
+.harmonization-procedures__mark--lower-right {
+  top: 820px;
+  right: clamp(-235px, -13vw, -120px);
+}
+
+@media (max-width: 700px) {
+  :is(
+    .about-clinic__decor-mark,
+    .treatments-section__mark,
+    .team-section__decor-mark,
+    .results-section__decor-mark,
+    .reviews-section__decor-mark,
+    .information-section__decor-mark,
+    .harmonization-procedures__mark
+  ) {
+    width: min(520px, 132vw);
+    height: auto;
+  }
+
+  .about-clinic__decor-mark--left {
+    top: 24px;
+    left: -150px;
+  }
+
+  .about-clinic__decor-mark--right {
+    top: 610px;
+    right: -135px;
+    left: auto;
+  }
+
+  .treatments-section__mark--upper-left {
+    top: 52px;
+    left: -150px;
+  }
+
+  .treatments-section__mark--upper-right {
+    top: 690px;
+    right: -135px;
+  }
+
+  .treatments-section__mark--lower-left {
+    top: 1510px;
+    left: -150px;
+  }
+
+  .treatments-section__mark--lower-right {
+    top: 2220px;
+    right: -135px;
+  }
+
+  .team-section__decor-mark--left {
+    top: -30px;
+    left: -150px;
+  }
+
+  .team-section__decor-mark--right {
+    top: 410px;
+    right: -135px;
+  }
+
+  .results-section__decor-mark--left {
+    top: 12px;
+    left: -150px;
+  }
+
+  .results-section__decor-mark--right {
+    top: 540px;
+    right: -135px;
+  }
+
+  .reviews-section__decor-mark--left {
+    top: -24px;
+    left: -150px;
+  }
+
+  .reviews-section__decor-mark--right {
+    top: 300px;
+    right: -135px;
+  }
+
+  .information-section__decor-mark--left {
+    top: -18px;
+    left: -150px;
+  }
+
+  .information-section__decor-mark--right {
+    top: 560px;
+    right: -135px;
+  }
+
+  .contact-section__decor-mark {
+    width: min(280px, 72vw);
+  }
+
+  .contact-section__decor-mark--left {
+    top: -4px;
+    left: -82px;
+  }
+
+  .contact-section__decor-mark--right {
+    top: 2px;
+    right: -72px;
+  }
+
+  .harmonization-procedures__mark--upper-left {
+    top: 8px;
+    left: -150px;
+  }
+
+  .harmonization-procedures__mark--middle-right {
+    top: 540px;
+    right: -135px;
+  }
+
+  .harmonization-procedures__mark--lower-right {
+    top: 940px;
+    right: -135px;
   }
 }
 

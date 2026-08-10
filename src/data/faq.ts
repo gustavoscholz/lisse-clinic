@@ -11,7 +11,7 @@ export const faqItems: readonly FaqItem[] = [
     id: 'tratamento-indicado',
     question: 'Como saber qual tratamento é indicado para mim?',
     answer:
-      'A indicação é definida somente após uma avaliação individual. Consideramos suas características, seu histórico de saúde, suas prioridades e possíveis contraindicações para recomendar um plano seguro e coerente — ou orientar quando determinado procedimento não é adequado para você.',
+      'A indicação é definida somente após uma avaliação individual. Consideramos suas características, seu histórico de saúde, suas prioridades e possíveis contraindicações para recomendar um plano seguro e coerente. Quando determinado procedimento não é adequado para você, nossa equipe explica os motivos e apresenta as orientações necessárias.',
   },
   {
     id: 'tratamentos-personalizados',

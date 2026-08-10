@@ -23,6 +23,10 @@ type DragState = {
   startScrollLeft: number
 }
 
+const REVIEW_LOOP_COPIES = 3
+const REVIEW_LOOP_MIDDLE_COPY = 1
+const INITIAL_REVIEW_INDEX = 2
+
 function GoogleSummary() {
   return (
     <div className="reviews-summary" data-reveal="up">
@@ -79,7 +83,22 @@ export function Reviews() {
   const viewportRef = useRef<HTMLDivElement>(null)
   const dragStateRef = useRef<DragState | null>(null)
   const scrollFrameRef = useRef<number | null>(null)
-  const [activeIndex, setActiveIndex] = useState(2)
+  const normalizationTimerRef = useRef<number | null>(null)
+  const physicalIndexRef = useRef(
+    reviews.length * REVIEW_LOOP_MIDDLE_COPY + INITIAL_REVIEW_INDEX,
+  )
+  const activeIndexRef = useRef(INITIAL_REVIEW_INDEX)
+  const [activeIndex, setActiveIndex] = useState(INITIAL_REVIEW_INDEX)
+
+  const loopedReviews = Array.from(
+    { length: REVIEW_LOOP_COPIES },
+    (_, copyIndex) =>
+      reviews.map((review, logicalIndex) => ({
+        copyIndex,
+        logicalIndex,
+        review,
+      })),
+  ).flat()
 
   const getSlideLeft = useCallback((index: number) => {
     const viewport = viewportRef.current
@@ -92,12 +111,13 @@ export function Reviews() {
     return slide.offsetLeft - (viewport.clientWidth - slide.offsetWidth) / 2
   }, [])
 
-  const scrollToIndex = useCallback(
+  const scrollToPhysicalIndex = useCallback(
     (requestedIndex: number, behavior?: ScrollBehavior) => {
       const viewport = viewportRef.current
       if (!viewport) return
 
-      const nextIndex = Math.max(0, Math.min(requestedIndex, reviews.length - 1))
+      const slideCount = reviews.length * REVIEW_LOOP_COPIES
+      const nextIndex = Math.max(0, Math.min(requestedIndex, slideCount - 1))
       const reducedMotion = window.matchMedia(
         '(prefers-reduced-motion: reduce)',
       ).matches
@@ -106,13 +126,40 @@ export function Reviews() {
         left: getSlideLeft(nextIndex),
         behavior: behavior ?? (reducedMotion ? 'auto' : 'smooth'),
       })
-      setActiveIndex(nextIndex)
+      physicalIndexRef.current = nextIndex
+      const logicalIndex = nextIndex % reviews.length
+      activeIndexRef.current = logicalIndex
+      setActiveIndex(logicalIndex)
     },
     [getSlideLeft],
   )
 
+  const scrollToLogicalIndex = useCallback(
+    (requestedIndex: number) => {
+      const logicalIndex =
+        ((requestedIndex % reviews.length) + reviews.length) % reviews.length
+      const candidates = Array.from(
+        { length: REVIEW_LOOP_COPIES },
+        (_, copyIndex) => copyIndex * reviews.length + logicalIndex,
+      )
+      const currentIndex = physicalIndexRef.current
+      const nearestIndex = candidates.reduce((nearest, candidate) =>
+        Math.abs(candidate - currentIndex) < Math.abs(nearest - currentIndex)
+          ? candidate
+          : nearest,
+      )
+
+      scrollToPhysicalIndex(nearestIndex)
+    },
+    [scrollToPhysicalIndex],
+  )
+
   useLayoutEffect(() => {
-    const positionInitialSlide = () => scrollToIndex(2, 'auto')
+    const positionInitialSlide = () =>
+      scrollToPhysicalIndex(
+        reviews.length * REVIEW_LOOP_MIDDLE_COPY + activeIndexRef.current,
+        'auto',
+      )
     const frame = window.requestAnimationFrame(positionInitialSlide)
     window.addEventListener('resize', positionInitialSlide)
 
@@ -120,12 +167,15 @@ export function Reviews() {
       window.cancelAnimationFrame(frame)
       window.removeEventListener('resize', positionInitialSlide)
     }
-  }, [scrollToIndex])
+  }, [scrollToPhysicalIndex])
 
   useEffect(
     () => () => {
       if (scrollFrameRef.current !== null) {
         window.cancelAnimationFrame(scrollFrameRef.current)
+      }
+      if (normalizationTimerRef.current !== null) {
+        window.clearTimeout(normalizationTimerRef.current)
       }
     },
     [],
@@ -151,18 +201,62 @@ export function Reviews() {
     ).index
   }, [])
 
+  const normalizeLoopPosition = useCallback(() => {
+    const viewport = viewportRef.current
+    const physicalIndex = physicalIndexRef.current
+    if (!viewport || dragStateRef.current) return
+
+    let normalizedIndex = physicalIndex
+    if (physicalIndex < reviews.length) {
+      normalizedIndex = physicalIndex + reviews.length
+    } else if (physicalIndex >= reviews.length * 2) {
+      normalizedIndex = physicalIndex - reviews.length
+    }
+
+    if (normalizedIndex === physicalIndex) return
+
+    const slides = viewport.querySelectorAll<HTMLElement>(
+      '.reviews-carousel__slide',
+    )
+    const currentSlide = slides[physicalIndex]
+    const normalizedSlide = slides[normalizedIndex]
+    if (!currentSlide || !normalizedSlide) return
+
+    viewport.scrollLeft += normalizedSlide.offsetLeft - currentSlide.offsetLeft
+    physicalIndexRef.current = normalizedIndex
+  }, [])
+
   const handleScroll = () => {
     if (scrollFrameRef.current !== null) {
       window.cancelAnimationFrame(scrollFrameRef.current)
     }
 
+    if (normalizationTimerRef.current !== null) {
+      window.clearTimeout(normalizationTimerRef.current)
+    }
+
     scrollFrameRef.current = window.requestAnimationFrame(() => {
-      setActiveIndex(findNearestSlide())
+      const physicalIndex = findNearestSlide()
+      const logicalIndex = physicalIndex % reviews.length
+      physicalIndexRef.current = physicalIndex
+      activeIndexRef.current = logicalIndex
+      setActiveIndex(logicalIndex)
+
+      if (!dragStateRef.current) {
+        normalizationTimerRef.current = window.setTimeout(
+          normalizeLoopPosition,
+          140,
+        )
+      }
     })
   }
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType !== 'mouse' || event.button !== 0) return
+
+    if (normalizationTimerRef.current !== null) {
+      window.clearTimeout(normalizationTimerRef.current)
+    }
 
     event.currentTarget.setPointerCapture(event.pointerId)
     event.currentTarget.dataset.dragging = 'true'
@@ -192,22 +286,22 @@ export function Reviews() {
 
     delete event.currentTarget.dataset.dragging
     dragStateRef.current = null
-    scrollToIndex(findNearestSlide())
+    scrollToPhysicalIndex(findNearestSlide())
   }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'ArrowRight') {
       event.preventDefault()
-      scrollToIndex(activeIndex + 1)
+      scrollToPhysicalIndex(physicalIndexRef.current + 1)
     } else if (event.key === 'ArrowLeft') {
       event.preventDefault()
-      scrollToIndex(activeIndex - 1)
+      scrollToPhysicalIndex(physicalIndexRef.current - 1)
     } else if (event.key === 'Home') {
       event.preventDefault()
-      scrollToIndex(0)
+      scrollToLogicalIndex(0)
     } else if (event.key === 'End') {
       event.preventDefault()
-      scrollToIndex(reviews.length - 1)
+      scrollToLogicalIndex(reviews.length - 1)
     }
   }
 
@@ -259,17 +353,28 @@ export function Reviews() {
             onPointerCancel={finishPointerDrag}
             onKeyDown={handleKeyDown}
           >
-            {reviews.map((review, index) => (
+            {loopedReviews.map(
+              ({ copyIndex, logicalIndex, review }, physicalIndex) => (
               <div
                 className="reviews-carousel__slide"
-                role="group"
-                aria-roledescription="slide"
-                aria-label={`${index + 1} de ${reviews.length}`}
-                key={review.id}
+                role={copyIndex === REVIEW_LOOP_MIDDLE_COPY ? 'group' : undefined}
+                aria-roledescription={
+                  copyIndex === REVIEW_LOOP_MIDDLE_COPY ? 'slide' : undefined
+                }
+                aria-label={
+                  copyIndex === REVIEW_LOOP_MIDDLE_COPY
+                    ? `${logicalIndex + 1} de ${reviews.length}`
+                    : undefined
+                }
+                aria-hidden={
+                  copyIndex === REVIEW_LOOP_MIDDLE_COPY ? undefined : true
+                }
+                key={`${review.id}-copy-${copyIndex}-${physicalIndex}`}
               >
                 <ReviewCard review={review} />
               </div>
-            ))}
+              ),
+            )}
           </div>
 
           <span className="reviews-carousel__shade reviews-carousel__shade--left" />
@@ -284,7 +389,7 @@ export function Reviews() {
               data-active={activeIndex === index}
               aria-label={`Mostrar avaliação ${index + 1}`}
               aria-current={activeIndex === index ? 'true' : undefined}
-              onClick={() => scrollToIndex(index)}
+              onClick={() => scrollToLogicalIndex(index)}
               key={review.id}
             />
           ))}

@@ -43,6 +43,7 @@ function ResultCard({ result, isClone = false }: ResultCardProps) {
       <span className="results-card__divider" aria-hidden="true" />
       <span className="results-card__watermark" aria-hidden="true">
         <img src={brandMark} alt="" />
+        <span>Lisse</span>
       </span>
       <span className="results-card__label results-card__label--before">
         Antes
