@@ -3124,7 +3124,7 @@ h3 {
   margin-top: 52px;
   margin-left: calc(50% - 50vw);
   flex-direction: column;
-  gap: 36px;
+  gap: 52px;
 }
 
 .results-marquee {
@@ -3378,7 +3378,7 @@ h3 {
     --results-gap: 22px;
     --results-loop-offset: 7.3333px;
     margin-top: 44px;
-    gap: 28px;
+    gap: 40px;
   }
 
   .results-marquee__track {
@@ -3473,7 +3473,7 @@ h3 {
     --results-gap: 12px;
     --results-loop-offset: 4px;
     margin-top: 34px;
-    gap: 12px;
+    gap: 20px;
   }
 
   .results-marquee {
@@ -6158,7 +6158,7 @@ h3 {
     margin-left: 0;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     column-gap: 30px;
-    row-gap: 36px;
+    row-gap: 52px;
   }
 
   .results-marquee,
@@ -6213,14 +6213,14 @@ h3 {
 @media (prefers-reduced-motion: reduce) and (max-width: 1100px) {
   .results-section__marquees {
     column-gap: 22px;
-    row-gap: 28px;
+    row-gap: 40px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) and (max-width: 700px) {
   .results-section__marquees {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px 10px;
+    gap: 20px 10px;
   }
 }
 
