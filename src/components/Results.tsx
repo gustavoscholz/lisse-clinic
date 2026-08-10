@@ -7,10 +7,19 @@ import type { ResultCase } from '../types/content'
 
 type ResultCardProps = {
   result: ResultCase
-  index: number
+  isClone?: boolean
 }
 
-function ResultCard({ result, index }: ResultCardProps) {
+type ResultRowProps = {
+  results: ResultCase[]
+  rowIndex: number
+}
+
+const resultsRows = Array.from({ length: 4 }, (_, index) =>
+  resultCases.slice(index * 3, index * 3 + 3),
+)
+
+function ResultCard({ result, isClone = false }: ResultCardProps) {
   const imageStyle = result.crop
     ? {
         width: `${result.crop.width}%`,
@@ -21,21 +30,20 @@ function ResultCard({ result, index }: ResultCardProps) {
     : undefined
 
   return (
-    <figure
-      className="results-card"
-      data-reveal="up"
-      data-reveal-delay={index % 3 === 1 ? '1' : undefined}
-    >
+    <figure className="results-card" role={isClone ? undefined : 'listitem'}>
       <img
         className={`results-card__image${result.fit === 'cover' ? ' results-card__image--cover' : ''}`}
         src={result.image}
-        alt={result.alt}
+        alt={isClone ? '' : result.alt}
         style={imageStyle}
         loading="lazy"
         decoding="async"
       />
 
       <span className="results-card__divider" aria-hidden="true" />
+      <span className="results-card__watermark" aria-hidden="true">
+        <img src={brandMark} alt="" />
+      </span>
       <span className="results-card__label results-card__label--before">
         Antes
       </span>
@@ -43,6 +51,52 @@ function ResultCard({ result, index }: ResultCardProps) {
         Depois
       </span>
     </figure>
+  )
+}
+
+function ResultRow({ results, rowIndex }: ResultRowProps) {
+  const direction = rowIndex % 2 === 0 ? 'right' : 'left'
+
+  return (
+    <div
+      className={`results-marquee results-marquee--${direction}`}
+      role="group"
+      aria-label={`Resultados estéticos, fileira ${rowIndex + 1} de 4`}
+      tabIndex={0}
+    >
+      <div className="results-marquee__track">
+        <div className="results-marquee__group" role="list">
+          {results.map((result) => (
+            <ResultCard result={result} key={result.id} />
+          ))}
+        </div>
+
+        {[1, 2].map((copy) => (
+          <div
+            className="results-marquee__group results-marquee__group--clone"
+            aria-hidden="true"
+            key={copy}
+          >
+            {results.map((result) => (
+              <ResultCard
+                result={result}
+                isClone
+                key={`${result.id}-copy-${copy}`}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <span
+        className="results-marquee__shade results-marquee__shade--left"
+        aria-hidden="true"
+      />
+      <span
+        className="results-marquee__shade results-marquee__shade--right"
+        aria-hidden="true"
+      />
+    </div>
   )
 }
 
@@ -78,9 +132,13 @@ export function Results() {
           </p>
         </header>
 
-        <div className="results-section__grid">
-          {resultCases.map((result, index) => (
-            <ResultCard result={result} index={index} key={result.id} />
+        <div className="results-section__marquees" data-reveal="up">
+          {resultsRows.map((results, index) => (
+            <ResultRow
+              results={results}
+              rowIndex={index}
+              key={`results-row-${index + 1}`}
+            />
           ))}
         </div>
 

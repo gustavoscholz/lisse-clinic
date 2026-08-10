@@ -3115,17 +3115,114 @@ h3 {
   line-height: 1.5;
 }
 
-.results-section__grid {
-  display: grid;
+.results-section__marquees {
+  --results-card-width: 420px;
+  --results-gap: 40px;
+  --results-loop-offset: 13.3333px;
+  display: flex;
+  width: 100vw;
   margin-top: 52px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 30px;
-  row-gap: 36px;
+  margin-left: calc(50% - 50vw);
+  flex-direction: column;
+  gap: 36px;
+}
+
+.results-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 5px 0;
+  outline: none;
+}
+
+.results-marquee__track {
+  display: flex;
+  width: max-content;
+  gap: var(--results-gap);
+  animation-duration: 34s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  will-change: transform;
+}
+
+.results-marquee--left .results-marquee__track {
+  animation-name: results-marquee-left;
+}
+
+.results-marquee--right .results-marquee__track {
+  animation-name: results-marquee-right;
+}
+
+.results-marquee__group {
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--results-gap);
+}
+
+.results-marquee:hover .results-marquee__track,
+.results-marquee:focus-within .results-marquee__track,
+.results-marquee:active .results-marquee__track {
+  animation-play-state: paused;
+}
+
+.results-marquee:focus-visible {
+  outline: 2px solid rgb(161 132 98 / 72%);
+  outline-offset: -3px;
+}
+
+.results-marquee__shade {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  bottom: 0;
+  width: clamp(54px, 10vw, 190px);
+  pointer-events: none;
+}
+
+.results-marquee__shade--left {
+  left: 0;
+  background: linear-gradient(90deg, var(--cream) 0%, rgb(243 238 230 / 72%) 34%, transparent 100%);
+}
+
+.results-marquee__shade--right {
+  right: 0;
+  background: linear-gradient(270deg, var(--cream) 0%, rgb(243 238 230 / 72%) 34%, transparent 100%);
+}
+
+.results-marquee--left .results-marquee__shade--left,
+.results-marquee--right .results-marquee__shade--right {
+  width: clamp(78px, 13vw, 250px);
+}
+
+.results-marquee--left .results-marquee__shade--right,
+.results-marquee--right .results-marquee__shade--left {
+  opacity: 0.48;
+}
+
+@keyframes results-marquee-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(calc(-33.333333% - var(--results-loop-offset)), 0, 0);
+  }
+}
+
+@keyframes results-marquee-right {
+  from {
+    transform: translate3d(calc(-33.333333% - var(--results-loop-offset)), 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .results-card {
   position: relative;
-  width: 100%;
+  width: var(--results-card-width);
+  flex: 0 0 var(--results-card-width);
   overflow: hidden;
   margin: 0;
   border-radius: 12px;
@@ -3156,6 +3253,26 @@ h3 {
   width: 1px;
   background: rgba(213, 185, 153, 0.85);
   transform: translateX(-0.5px);
+}
+
+.results-card__watermark {
+  position: absolute;
+  z-index: 2;
+  bottom: 15px;
+  left: 50%;
+  display: grid;
+  width: 30px;
+  height: 52px;
+  place-items: center;
+  opacity: 0.12;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.results-card__watermark img {
+  width: 24px;
+  height: 52px;
+  object-fit: fill;
 }
 
 .results-card__label {
@@ -3256,10 +3373,36 @@ h3 {
     font-size: clamp(0.92rem, 1.8vw, 1.1rem);
   }
 
-  .results-section__grid {
+  .results-section__marquees {
+    --results-card-width: 310px;
+    --results-gap: 22px;
+    --results-loop-offset: 7.3333px;
     margin-top: 44px;
-    column-gap: 22px;
-    row-gap: 28px;
+    gap: 28px;
+  }
+
+  .results-marquee__track {
+    animation-duration: 30s;
+  }
+
+  .results-marquee__shade {
+    width: clamp(42px, 9vw, 92px);
+  }
+
+  .results-marquee--left .results-marquee__shade--left,
+  .results-marquee--right .results-marquee__shade--right {
+    width: clamp(62px, 12vw, 124px);
+  }
+
+  .results-card__watermark {
+    bottom: 12px;
+    width: 25px;
+    height: 44px;
+  }
+
+  .results-card__watermark img {
+    width: 20px;
+    height: 44px;
   }
 
   .results-card__label {
@@ -3325,10 +3468,29 @@ h3 {
     line-height: 1.45;
   }
 
-  .results-section__grid {
+  .results-section__marquees {
+    --results-card-width: 250px;
+    --results-gap: 12px;
+    --results-loop-offset: 4px;
     margin-top: 34px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px 10px;
+    gap: 12px;
+  }
+
+  .results-marquee {
+    padding: 3px 0;
+  }
+
+  .results-marquee__track {
+    animation-duration: 26s;
+  }
+
+  .results-marquee__shade {
+    width: 38px;
+  }
+
+  .results-marquee--left .results-marquee__shade--left,
+  .results-marquee--right .results-marquee__shade--right {
+    width: 68px;
   }
 
   .results-card {
@@ -3349,6 +3511,17 @@ h3 {
 
   .results-card__label--after {
     right: 3px;
+  }
+
+  .results-card__watermark {
+    bottom: 9px;
+    width: 21px;
+    height: 36px;
+  }
+
+  .results-card__watermark img {
+    width: 17px;
+    height: 36px;
   }
 
   .results-section__cta {
@@ -5979,6 +6152,42 @@ h3 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .results-section__marquees {
+    display: grid;
+    width: 100%;
+    margin-left: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 30px;
+    row-gap: 36px;
+  }
+
+  .results-marquee,
+  .results-marquee__track,
+  .results-marquee__group {
+    display: contents;
+  }
+
+  .results-marquee__track {
+    animation: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .results-marquee__group--clone,
+  .results-marquee__shade {
+    display: none;
+  }
+
+  .results-card {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .results-marquee:focus-visible .results-card:first-child {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
   .harmonization-benefits__viewport {
     overflow-x: auto;
     padding-bottom: 6px;
@@ -5998,6 +6207,20 @@ h3 {
 
   .harmonization-benefits__shade {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 1100px) {
+  .results-section__marquees {
+    column-gap: 22px;
+    row-gap: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 700px) {
+  .results-section__marquees {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 10px;
   }
 }
 
