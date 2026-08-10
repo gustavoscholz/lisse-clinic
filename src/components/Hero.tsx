@@ -1,8 +1,11 @@
-import clinicBackground from '../assets/hero/clinic-background.png'
 import backgroundMark from '../assets/hero/background-mark.png'
 import brandMark from '../assets/hero/brand-mark.svg'
+import homeCurveCenter from '../assets/hero/decor-curve-center.svg'
+import homeCurveRight from '../assets/hero/decor-curve-right.svg'
+import homeGlow from '../assets/hero/decor-circle.svg'
+import homeRibbon from '../assets/hero/decor-ribbon.svg'
 import harmonizationMedallion from '../assets/hero/harmonization-medallion.png'
-import kellyPortrait from '../assets/hero/kelly-portrait.jpg'
+import kellyCutout from '../assets/hero/kelly-cutout.png'
 import { externalLinks, specialties, type SiteMode } from '../data/site'
 import { specialtyPages } from '../data/specialtyPages'
 import { Header } from './Header'
@@ -47,11 +50,25 @@ export function Hero({ mode, onNavigate }: HeroProps) {
             </>
           ) : (
             <>
-              <img className="hero__clinic" src={clinicBackground} alt="" />
-              <div className="hero__clinic-fade" />
-              <img className="hero__background-mark" src={backgroundMark} alt="" />
+              <div className="hero__home-backdrop" />
+              <img className="hero__home-glow" src={homeGlow} alt="" />
+              <img
+                className="hero__home-ribbon"
+                src={homeRibbon}
+                alt=""
+              />
+              <img
+                className="hero__home-curve hero__home-curve--center"
+                src={homeCurveCenter}
+                alt=""
+              />
+              <img
+                className="hero__home-curve hero__home-curve--right"
+                src={homeCurveRight}
+                alt=""
+              />
               <div className="hero__kelly-frame">
-                <img className="hero__kelly" src={kellyPortrait} alt="" />
+                <img className="hero__kelly" src={kellyCutout} alt="" />
               </div>
             </>
           )}
