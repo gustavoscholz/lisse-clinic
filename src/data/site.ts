@@ -1,4 +1,21 @@
-export type SiteMode = 'inicio' | 'harmonizacao'
+export type SiteMode =
+  | 'inicio'
+  | 'harmonizacao'
+  | 'faloplastia'
+  | 'emagrecimento'
+
+export type SpecialtyMode = Exclude<SiteMode, 'inicio'>
+
+export const siteModes: readonly SiteMode[] = [
+  'inicio',
+  'harmonizacao',
+  'faloplastia',
+  'emagrecimento',
+]
+
+export function isSiteMode(value: string | null): value is SiteMode {
+  return value !== null && siteModes.includes(value as SiteMode)
+}
 
 export const navigationItems = [
   {
@@ -17,17 +34,17 @@ export const navigationItems = [
   },
   {
     label: 'Faloplastia',
-    href: '#tratamentos',
-    mode: 'inicio',
-    targetId: 'tratamentos',
-    activeFor: undefined,
+    href: '?modo=faloplastia#inicio',
+    mode: 'faloplastia',
+    targetId: 'inicio',
+    activeFor: 'faloplastia',
   },
   {
     label: 'Emagrecimento',
-    href: '#tratamentos',
-    mode: 'inicio',
-    targetId: 'tratamentos',
-    activeFor: undefined,
+    href: '?modo=emagrecimento#inicio',
+    mode: 'emagrecimento',
+    targetId: 'inicio',
+    activeFor: 'emagrecimento',
   },
 ] as const
 

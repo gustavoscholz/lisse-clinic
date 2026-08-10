@@ -2,22 +2,20 @@ import { useEffect, useLayoutEffect, useState } from 'react'
 import { AboutClinic } from './components/AboutClinic'
 import { Contact } from './components/Contact'
 import { Hero } from './components/Hero'
-import { HarmonizationBenefits } from './components/HarmonizationBenefits'
-import { HarmonizationProcedures } from './components/HarmonizationProcedures'
+import { SpecialtyBenefits } from './components/HarmonizationBenefits'
+import { SpecialtyProcedures } from './components/HarmonizationProcedures'
 import { Information } from './components/Information'
 import { Results } from './components/Results'
 import { Reviews } from './components/Reviews'
 import { SiteFooter } from './components/SiteFooter'
 import { Team } from './components/Team'
 import { Treatments } from './components/Treatments'
-import type { SiteMode } from './data/site'
+import { isSiteMode, type SiteMode } from './data/site'
 import { useScrollReveal } from './hooks/useScrollReveal'
 
 function readModeFromLocation(): SiteMode {
-  return new URLSearchParams(window.location.search).get('modo') ===
-    'harmonizacao'
-    ? 'harmonizacao'
-    : 'inicio'
+  const requestedMode = new URLSearchParams(window.location.search).get('modo')
+  return isSiteMode(requestedMode) ? requestedMode : 'inicio'
 }
 
 function App() {
@@ -49,10 +47,10 @@ function App() {
   const navigate = (mode: SiteMode, targetId: string) => {
     const nextUrl = new URL(window.location.href)
 
-    if (mode === 'harmonizacao') {
-      nextUrl.searchParams.set('modo', 'harmonizacao')
-    } else {
+    if (mode === 'inicio') {
       nextUrl.searchParams.delete('modo')
+    } else {
+      nextUrl.searchParams.set('modo', mode)
     }
 
     nextUrl.hash = targetId
@@ -62,12 +60,13 @@ function App() {
   }
 
   const isHome = siteMode === 'inicio'
+  const specialtyMode = isHome ? null : siteMode
 
   return (
     <>
       <main>
         <Hero mode={siteMode} onNavigate={navigate} />
-        {isHome ? (
+        {!specialtyMode ? (
           <>
             <AboutClinic />
             <Treatments />
@@ -79,15 +78,15 @@ function App() {
           </>
         ) : (
           <>
-            <HarmonizationProcedures />
-            <HarmonizationBenefits />
+            <SpecialtyProcedures mode={specialtyMode} />
+            <SpecialtyBenefits mode={specialtyMode} />
             <Results />
             <Reviews />
             <Information />
           </>
         )}
       </main>
-      <SiteFooter />
+      <SiteFooter activeMode={siteMode} onNavigate={navigate} />
     </>
   )
 }

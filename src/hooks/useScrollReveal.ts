@@ -37,6 +37,29 @@ export function useScrollReveal(dependency?: unknown) {
 
     elements.forEach((element) => observer.observe(element))
 
-    return () => observer.disconnect()
+    const revealVisibleElements = () => {
+      const revealBoundary = window.innerHeight * 0.9
+
+      elements.forEach((element) => {
+        const bounds = element.getBoundingClientRect()
+        const isVisible = bounds.top < revealBoundary && bounds.bottom > 0
+
+        if (!isVisible) return
+
+        element.classList.add('is-revealed')
+        observer.unobserve(element)
+      })
+    }
+
+    const revealVisibleFrame = window.requestAnimationFrame(
+      revealVisibleElements,
+    )
+    const revealVisibleTimeout = window.setTimeout(revealVisibleElements, 160)
+
+    return () => {
+      window.cancelAnimationFrame(revealVisibleFrame)
+      window.clearTimeout(revealVisibleTimeout)
+      observer.disconnect()
+    }
   }, [dependency])
 }

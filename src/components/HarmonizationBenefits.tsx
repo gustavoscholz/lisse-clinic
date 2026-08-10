@@ -1,18 +1,21 @@
 import cardWatermark from '../assets/treatments/card-mark-gold.svg'
-import { harmonizationBenefits } from '../data/harmonizationBenefits'
+import type { SpecialtyMode } from '../data/site'
+import { specialtyPages } from '../data/specialtyPages'
+import type { SpecialtyBenefit } from '../types/content'
 
 type BenefitsGroupProps = {
+  benefits: readonly SpecialtyBenefit[]
   duplicate?: boolean
 }
 
-function BenefitsGroup({ duplicate = false }: BenefitsGroupProps) {
+function BenefitsGroup({ benefits, duplicate = false }: BenefitsGroupProps) {
   return (
     <div
       className="harmonization-benefits__group"
       role={duplicate ? undefined : 'list'}
       aria-hidden={duplicate || undefined}
     >
-      {harmonizationBenefits.map((benefit) => (
+      {benefits.map((benefit) => (
         <article
           className="harmonization-benefit-card"
           role={duplicate ? undefined : 'listitem'}
@@ -35,12 +38,19 @@ function BenefitsGroup({ duplicate = false }: BenefitsGroupProps) {
   )
 }
 
-export function HarmonizationBenefits() {
+type SpecialtyBenefitsProps = {
+  mode: SpecialtyMode
+}
+
+export function SpecialtyBenefits({ mode }: SpecialtyBenefitsProps) {
+  const config = specialtyPages[mode]
+
   return (
     <section
-      id="diferenciais-harmonizacao"
+      id={`diferenciais-${mode}`}
       className="harmonization-benefits"
-      aria-label="Diferenciais dos tratamentos de harmonização"
+      aria-label={config.benefitsLabel}
+      data-specialty={mode}
     >
       <div
         className="harmonization-benefits__viewport"
@@ -49,8 +59,8 @@ export function HarmonizationBenefits() {
         data-reveal="fade"
       >
         <div className="harmonization-benefits__track">
-          <BenefitsGroup />
-          <BenefitsGroup duplicate />
+          <BenefitsGroup benefits={config.benefits} />
+          <BenefitsGroup benefits={config.benefits} duplicate />
         </div>
 
         <span className="harmonization-benefits__shade harmonization-benefits__shade--left" />

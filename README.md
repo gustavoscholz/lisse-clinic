@@ -11,6 +11,13 @@ npm run dev
 
 O servidor local utiliza `http://localhost:5173`.
 
+## Modos disponíveis
+
+- Início: `http://localhost:5173`
+- Harmonização: `http://localhost:5173/?modo=harmonizacao`
+- Faloplastia: `http://localhost:5173/?modo=faloplastia`
+- Emagrecimento: `http://localhost:5173/?modo=emagrecimento`
+
 ## Verificações
 
 ```bash

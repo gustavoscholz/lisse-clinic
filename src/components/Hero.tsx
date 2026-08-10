@@ -2,9 +2,9 @@ import clinicBackground from '../assets/hero/clinic-background.png'
 import backgroundMark from '../assets/hero/background-mark.png'
 import brandMark from '../assets/hero/brand-mark.svg'
 import harmonizationMedallion from '../assets/hero/harmonization-medallion.png'
-import harmonizationPhoto from '../assets/hero/harmonization-photo.png'
 import professionals from '../assets/hero/professionals.png'
 import { specialties, type SiteMode } from '../data/site'
+import { specialtyPages } from '../data/specialtyPages'
 import { Header } from './Header'
 import { SpecialtyRail } from './SpecialtyRail'
 
@@ -14,19 +14,22 @@ type HeroProps = {
 }
 
 export function Hero({ mode, onNavigate }: HeroProps) {
-  const isHarmonization = mode === 'harmonizacao'
+  const specialtyMode = mode === 'inicio' ? null : mode
+  const specialtyConfig = specialtyMode
+    ? specialtyPages[specialtyMode]
+    : null
 
   return (
     <section
       id="inicio"
-      className={`hero${isHarmonization ? ' hero--harmonization' : ''}`}
+      className={`hero${specialtyMode ? ` hero--specialty hero--${specialtyMode}` : ''}`}
       aria-labelledby="hero-title"
     >
       <Header activeMode={mode} onNavigate={onNavigate} />
 
       <div className="hero__stage">
         <div className="hero__visual" aria-hidden="true">
-          {isHarmonization ? (
+          {specialtyConfig && specialtyMode ? (
             <>
               <img
                 className="hero__harmonization-background-mark"
@@ -34,8 +37,8 @@ export function Hero({ mode, onNavigate }: HeroProps) {
                 alt=""
               />
               <img
-                className="hero__harmonization-photo"
-                src={harmonizationPhoto}
+                className={`hero__harmonization-photo hero__specialty-photo hero__specialty-photo--${specialtyConfig.hero.imageKind}`}
+                src={specialtyConfig.hero.image}
                 alt=""
               />
               <span className="hero__harmonization-medallion">
@@ -53,17 +56,16 @@ export function Hero({ mode, onNavigate }: HeroProps) {
         </div>
 
         <div className="hero__content">
-          {isHarmonization ? (
+          {specialtyConfig ? (
             <>
-              <p className="eyebrow">Harmonização facial e corporal</p>
+              <p className="eyebrow">{specialtyConfig.hero.eyebrow}</p>
               <h1 id="hero-title">
-                <span>Realce seus traços.</span>
-                <span>Valorize seus contornos.</span>
+                {specialtyConfig.hero.titleLines.map((line) => (
+                  <span key={line}>{line}</span>
+                ))}
               </h1>
               <p className="hero__description">
-                Tratamentos personalizados para quem deseja aprimorar a
-                aparência do rosto e do corpo com equilíbrio, naturalidade e
-                respeito às próprias características.
+                {specialtyConfig.hero.description}
               </p>
             </>
           ) : (
@@ -84,7 +86,7 @@ export function Hero({ mode, onNavigate }: HeroProps) {
             <span className="button button--primary" aria-disabled="true">
               Agendar avaliação
             </span>
-            {isHarmonization ? (
+            {specialtyConfig ? (
               <a className="button button--link" href="#procedimentos">
                 Conhecer tratamentos
               </a>
@@ -99,7 +101,7 @@ export function Hero({ mode, onNavigate }: HeroProps) {
 
       <SpecialtyRail items={specialties} />
 
-      {!isHarmonization && (
+      {!specialtyConfig && (
         <div className="hero__mark-mobile" aria-hidden="true">
           <img src={brandMark} alt="" />
         </div>

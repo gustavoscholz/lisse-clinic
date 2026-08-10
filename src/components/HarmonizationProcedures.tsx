@@ -1,10 +1,11 @@
 import decorMarkLeft from '../assets/about/decor-mark-left.svg'
 import decorMarkRight from '../assets/about/decor-mark-right.svg'
-import { harmonizationProcedures } from '../data/harmonizationProcedures'
-import type { HarmonizationProcedure } from '../types/content'
+import type { SpecialtyMode } from '../data/site'
+import { specialtyPages } from '../data/specialtyPages'
+import type { SpecialtyProcedure } from '../types/content'
 
 type ProcedureCardProps = {
-  procedure: HarmonizationProcedure
+  procedure: SpecialtyProcedure
 }
 
 function ProcedureCard({ procedure }: ProcedureCardProps) {
@@ -19,6 +20,7 @@ function ProcedureCard({ procedure }: ProcedureCardProps) {
           alt={procedure.imageAlt}
           loading="lazy"
           decoding="async"
+          style={{ objectPosition: procedure.imagePosition }}
         />
       </div>
 
@@ -62,12 +64,19 @@ function ProcedureCard({ procedure }: ProcedureCardProps) {
   )
 }
 
-export function HarmonizationProcedures() {
+type SpecialtyProceduresProps = {
+  mode: SpecialtyMode
+}
+
+export function SpecialtyProcedures({ mode }: SpecialtyProceduresProps) {
+  const config = specialtyPages[mode]
+
   return (
     <section
       id="procedimentos"
       className="harmonization-procedures"
-      aria-labelledby="harmonization-procedures-title"
+      aria-labelledby={`${mode}-procedures-title`}
+      data-specialty={mode}
     >
       <div className="harmonization-procedures__decor" aria-hidden="true">
         <img
@@ -90,19 +99,16 @@ export function HarmonizationProcedures() {
       <div className="harmonization-procedures__inner">
         <header className="harmonization-procedures__header" data-reveal="up">
           <p className="harmonization-procedures__eyebrow">
-            Sobre os procedimentos
+            {config.proceduresHeader.eyebrow}
           </p>
-          <h2 id="harmonization-procedures-title">
-            Cuidados pensados para o que você deseja transformar.
+          <h2 id={`${mode}-procedures-title`}>
+            {config.proceduresHeader.title}
           </h2>
-          <p>
-            Na Lisse, cada protocolo é definido após uma avaliação individual,
-            considerando suas características, necessidades e objetivos.
-          </p>
+          <p>{config.proceduresHeader.description}</p>
         </header>
 
         <div className="harmonization-procedures__list">
-          {harmonizationProcedures.map((procedure) => (
+          {config.procedures.map((procedure) => (
             <ProcedureCard procedure={procedure} key={procedure.id} />
           ))}
         </div>

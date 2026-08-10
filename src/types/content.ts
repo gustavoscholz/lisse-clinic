@@ -50,7 +50,7 @@ export interface FaqItem {
   answer: string
 }
 
-export interface HarmonizationProcedure {
+export interface SpecialtyProcedure {
   id: string
   eyebrow: string
   title: string
@@ -60,11 +60,15 @@ export interface HarmonizationProcedure {
   image: string
   imageAlt: string
   imageSide: 'left' | 'right'
+  imagePosition?: string
 }
 
-export interface HarmonizationBenefit {
+export interface SpecialtyBenefit {
   id: string
   title: string
   description: string
   icon: string
 }
+
+export type HarmonizationProcedure = SpecialtyProcedure
+export type HarmonizationBenefit = SpecialtyBenefit

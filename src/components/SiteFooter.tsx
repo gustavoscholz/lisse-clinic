@@ -1,30 +1,48 @@
 import brandLogo from '../assets/hero/brand-logo.svg'
 import brandMark from '../assets/hero/brand-mark.svg'
 import addressIcon from '../assets/information/address-icon.png'
-import { externalLinks } from '../data/site'
+import { externalLinks, type SiteMode } from '../data/site'
 
 const highlights = [
-  'Harmonização Corporal',
-  'Faloplastia',
-  'Emagrecimento',
+  { label: 'Harmonização Corporal', mode: 'harmonizacao' },
+  { label: 'Faloplastia', mode: 'faloplastia' },
+  { label: 'Emagrecimento', mode: 'emagrecimento' },
 ] as const
 
 const footerNavigation = [
-  { label: 'Início', href: '#inicio' },
-  { label: 'Sobre a Lisse Clinic', href: '#sobre' },
-  { label: 'Tratamentos', href: '#tratamentos' },
-  { label: 'Equipe', href: '#equipe' },
-  { label: 'Resultados', href: '#resultados' },
-  { label: 'Feedbacks', href: '#avaliacoes' },
+  { label: 'Início', targetId: 'inicio', destination: 'inicio' },
+  { label: 'Sobre a Lisse Clinic', targetId: 'sobre', destination: 'inicio' },
+  { label: 'Tratamentos', targetId: 'tratamentos', destination: 'inicio' },
+  { label: 'Equipe', targetId: 'equipe', destination: 'inicio' },
+  { label: 'Resultados', targetId: 'resultados', destination: 'current' },
+  { label: 'Feedbacks', targetId: 'avaliacoes', destination: 'current' },
 ] as const
 
-export function SiteFooter() {
+type SiteFooterProps = {
+  activeMode: SiteMode
+  onNavigate: (mode: SiteMode, targetId: string) => void
+}
+
+function buildHref(mode: SiteMode, targetId: string) {
+  return mode === 'inicio'
+    ? `#${targetId}`
+    : `?modo=${mode}#${targetId}`
+}
+
+export function SiteFooter({ activeMode, onNavigate }: SiteFooterProps) {
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
         <div className="site-footer__grid">
           <div className="site-footer__brand" data-reveal="up">
-            <a href="#inicio" aria-label="Voltar ao início">
+            <a
+              href="#inicio"
+              aria-label="Voltar ao início"
+              onClick={(event) => {
+                event.preventDefault()
+                onNavigate('inicio', 'inicio')
+              }}
+            >
               <img src={brandLogo} alt="Lisse Clinic" />
             </a>
             <p>
@@ -41,8 +59,16 @@ export function SiteFooter() {
             <h2>Destaques</h2>
             <ul>
               {highlights.map((item) => (
-                <li key={item}>
-                  <a href="#tratamentos">{item}</a>
+                <li key={item.mode}>
+                  <a
+                    href={buildHref(item.mode, 'procedimentos')}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      onNavigate(item.mode, 'procedimentos')
+                    }}
+                  >
+                    {item.label}
+                  </a>
                 </li>
               ))}
             </ul>
@@ -51,11 +77,24 @@ export function SiteFooter() {
           <nav className="site-footer__column" aria-label="Navegação" data-reveal="up">
             <h2>Navegação</h2>
             <ul>
-              {footerNavigation.map((item) => (
-                <li key={item.href}>
-                  <a href={item.href}>{item.label}</a>
-                </li>
-              ))}
+              {footerNavigation.map((item) => {
+                const destinationMode =
+                  item.destination === 'current' ? activeMode : 'inicio'
+
+                return (
+                  <li key={item.targetId}>
+                    <a
+                      href={buildHref(destinationMode, item.targetId)}
+                      onClick={(event) => {
+                        event.preventDefault()
+                        onNavigate(destinationMode, item.targetId)
+                      }}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                )
+              })}
             </ul>
           </nav>
 

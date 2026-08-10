@@ -4560,6 +4560,32 @@ h3 {
   animation: hero-portrait-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+.hero__specialty-photo--consultation {
+  right: 0;
+  left: auto;
+  width: 62%;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.74) 13%,
+    #000 28%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.74) 13%,
+    #000 28%
+  );
+}
+
+.hero--faloplastia .hero__specialty-photo--consultation {
+  object-position: 43% center;
+}
+
+.hero--emagrecimento .hero__specialty-photo--consultation {
+  object-position: 49% center;
+}
+
 .hero__harmonization-medallion {
   position: absolute;
   z-index: 4;
@@ -4577,17 +4603,33 @@ h3 {
   object-fit: contain;
 }
 
-.hero--harmonization .hero__content {
+.hero--specialty .hero__content {
   top: clamp(158px, 21.5svh, 215px);
   width: clamp(650px, 47vw, 790px);
 }
 
-.hero--harmonization .hero__description {
+.hero--specialty .hero__description {
   max-width: clamp(610px, 43vw, 690px);
 }
 
-.hero--harmonization .button--link {
-  cursor: default;
+.hero--faloplastia .hero__content,
+.hero--emagrecimento .hero__content {
+  width: clamp(620px, 45vw, 760px);
+}
+
+.hero--faloplastia .hero__description,
+.hero--emagrecimento .hero__description {
+  max-width: clamp(560px, 40vw, 650px);
+}
+
+.hero--specialty .button--link {
+  cursor: pointer;
+}
+
+.hero--specialty .eyebrow,
+.hero--specialty .hero__description,
+.hero--specialty h1 span {
+  text-wrap: balance;
 }
 
 .mobile-nav a {
@@ -4609,13 +4651,13 @@ h3 {
 }
 
 @media (min-width: 1101px) and (max-width: 1399px) {
-  .hero--harmonization .hero__content {
+  .hero--specialty .hero__content {
     top: clamp(158px, 21.5svh, 190px);
     left: 4.5vw;
     width: 52vw;
   }
 
-  .hero--harmonization .hero__description {
+  .hero--specialty .hero__description {
     max-width: 610px;
   }
 
@@ -4632,18 +4674,49 @@ h3 {
 }
 
 @media (max-width: 1100px) {
-  .hero--harmonization .hero__content {
+  .hero--specialty .hero__content {
     top: 150px;
     left: 5.5%;
     width: 53%;
   }
 
-  .hero--harmonization .hero__description {
+  .hero--specialty .hero__description {
     max-width: 500px;
   }
 
   .hero__harmonization-photo {
     object-position: 63% center;
+  }
+
+  .hero__specialty-photo--consultation {
+    right: 0;
+    left: auto;
+    width: 60%;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.8) 16%,
+      #000 34%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.8) 16%,
+      #000 34%
+    );
+  }
+
+  .hero--faloplastia .hero__specialty-photo--consultation {
+    object-position: 43% center;
+  }
+
+  .hero--emagrecimento .hero__specialty-photo--consultation {
+    object-position: 48% center;
+  }
+
+  .hero--faloplastia .hero__content,
+  .hero--emagrecimento .hero__content {
+    width: 52%;
   }
 
   .hero__harmonization-background-mark {
@@ -4661,13 +4734,13 @@ h3 {
 }
 
 @media (max-width: 700px) {
-  .hero--harmonization .hero__content {
+  .hero--specialty .hero__content {
     top: 112px;
     left: 20px;
     width: calc(100% - 40px);
   }
 
-  .hero--harmonization .hero__description {
+  .hero--specialty .hero__description {
     max-width: 500px;
   }
 
@@ -4678,6 +4751,56 @@ h3 {
     height: 558px;
     object-position: 73% center;
     animation-name: hero-harmonization-photo-mobile-in;
+  }
+
+  .hero__specialty-photo--consultation {
+    right: auto;
+    left: 0;
+    width: 100%;
+    object-position: center;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.88) 10%,
+      #000 22%
+    );
+    mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.88) 10%,
+      #000 22%
+    );
+  }
+
+  .hero--faloplastia .hero__specialty-photo--consultation {
+    object-position: 43% center;
+  }
+
+  .hero--emagrecimento .hero__specialty-photo--consultation {
+    object-position: 48% center;
+  }
+
+  .hero--faloplastia .hero__content,
+  .hero--emagrecimento .hero__content {
+    width: calc(100% - 40px);
+  }
+
+  .hero--faloplastia .hero__description,
+  .hero--emagrecimento .hero__description {
+    max-width: 500px;
+  }
+
+  .hero--specialty h1 {
+    display: flex;
+  }
+
+  .hero--specialty h1 span {
+    display: block;
+    white-space: normal;
+  }
+
+  .hero--specialty h1 span:first-child::after {
+    content: none;
   }
 
   .hero__harmonization-background-mark {
@@ -4705,6 +4828,14 @@ h3 {
 
   .hero__harmonization-medallion {
     right: 4px;
+  }
+
+  .hero--faloplastia .hero__specialty-photo--consultation {
+    object-position: 42% center;
+  }
+
+  .hero--emagrecimento .hero__specialty-photo--consultation {
+    object-position: 47% center;
   }
 }
 
