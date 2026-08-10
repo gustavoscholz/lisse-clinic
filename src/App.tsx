@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { AboutClinic } from './components/AboutClinic'
 import { Contact } from './components/Contact'
 import { Hero } from './components/Hero'
@@ -10,12 +11,27 @@ import { Reviews } from './components/Reviews'
 import { SiteFooter } from './components/SiteFooter'
 import { Team } from './components/Team'
 import { Treatments } from './components/Treatments'
-import { isSiteMode, type SiteMode } from './data/site'
+import {
+  isSiteMode,
+  type SiteMode,
+  type SpecialtyMode,
+} from './data/site'
 import { useScrollReveal } from './hooks/useScrollReveal'
 
 function readModeFromLocation(): SiteMode {
   const requestedMode = new URLSearchParams(window.location.search).get('modo')
   return isSiteMode(requestedMode) ? requestedMode : 'inicio'
+}
+
+type NavigateOptions = {
+  instantScroll?: boolean
+  transition?: boolean
+}
+
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (update: () => void) => {
+    finished: Promise<void>
+  }
 }
 
 function App() {
@@ -44,19 +60,62 @@ function App() {
     return () => window.cancelAnimationFrame(frame)
   }, [navigationRevision, siteMode])
 
-  const navigate = (mode: SiteMode, targetId: string) => {
-    const nextUrl = new URL(window.location.href)
+  const navigate = (
+    mode: SiteMode,
+    targetId: string,
+    options: NavigateOptions = {},
+  ) => {
+    const commitNavigation = () => {
+      const nextUrl = new URL(window.location.href)
+      const root = document.documentElement
 
-    if (mode === 'inicio') {
-      nextUrl.searchParams.delete('modo')
-    } else {
-      nextUrl.searchParams.set('modo', mode)
+      if (options.instantScroll) {
+        root.classList.add('is-instant-navigation')
+      }
+
+      if (mode === 'inicio') {
+        nextUrl.searchParams.delete('modo')
+      } else {
+        nextUrl.searchParams.set('modo', mode)
+      }
+
+      nextUrl.hash = targetId
+      window.history.pushState({}, '', nextUrl)
+
+      flushSync(() => {
+        setSiteMode(mode)
+        setNavigationRevision((revision) => revision + 1)
+      })
+
+      if (options.instantScroll) {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            root.classList.remove('is-instant-navigation')
+          })
+        })
+      }
     }
 
-    nextUrl.hash = targetId
-    window.history.pushState({}, '', nextUrl)
-    setSiteMode(mode)
-    setNavigationRevision((revision) => revision + 1)
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches
+    const transitionDocument = document as ViewTransitionDocument
+
+    if (
+      options.transition &&
+      !reduceMotion &&
+      transitionDocument.startViewTransition
+    ) {
+      transitionDocument.startViewTransition(commitNavigation)
+      return
+    }
+
+    commitNavigation()
+  }
+
+  const navigateFromTreatment = (mode: SpecialtyMode) => {
+    navigate(mode, 'inicio', { instantScroll: true, transition: true })
   }
 
   const isHome = siteMode === 'inicio'
@@ -69,7 +128,7 @@ function App() {
         {!specialtyMode ? (
           <>
             <AboutClinic />
-            <Treatments />
+            <Treatments onNavigate={navigateFromTreatment} />
             <Team />
             <Results />
             <Reviews />

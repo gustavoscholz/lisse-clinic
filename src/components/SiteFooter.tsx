@@ -36,6 +36,7 @@ export function SiteFooter({ activeMode, onNavigate }: SiteFooterProps) {
         <div className="site-footer__grid">
           <div className="site-footer__brand" data-reveal="up">
             <a
+              className="site-footer__logo"
               href="#inicio"
               aria-label="Voltar ao início"
               onClick={(event) => {
@@ -49,10 +50,22 @@ export function SiteFooter({ activeMode, onNavigate }: SiteFooterProps) {
               Estética, saúde e bem-estar com cuidado individual e protocolos
               personalizados.
             </p>
-            <span className="site-footer__instagram" aria-disabled="true">
-              <span aria-hidden="true">◎</span>
+            <a
+              className="site-footer__instagram"
+              href={externalLinks.instagram}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Acessar o Instagram da Lisse Clinic"
+            >
+              <span aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle className="site-footer__instagram-dot" cx="17.4" cy="6.8" r="1" />
+                </svg>
+              </span>
               Siga-nos no Instagram
-            </span>
+            </a>
           </div>
 
           <nav className="site-footer__column" aria-label="Destaques" data-reveal="up">

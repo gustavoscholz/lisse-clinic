@@ -4,6 +4,7 @@ import generalAesthetics from '../assets/treatments/general-aesthetics.png'
 import phaloplasty from '../assets/treatments/phaloplasty.png'
 import weightLoss from '../assets/treatments/weight-loss.png'
 import type { Treatment } from '../types/content'
+import { externalLinks } from './site'
 
 export const treatments: readonly Treatment[] = [
   {
@@ -18,6 +19,7 @@ export const treatments: readonly Treatment[] = [
     tone: 'dark-gradient',
     imageSide: 'left',
     hasMedallion: true,
+    destination: { type: 'mode', mode: 'harmonizacao' },
   },
   {
     id: 'faloplastia',
@@ -30,6 +32,7 @@ export const treatments: readonly Treatment[] = [
     image: phaloplasty,
     tone: 'cream',
     imageSide: 'right',
+    destination: { type: 'mode', mode: 'faloplastia' },
   },
   {
     id: 'harmonizacao-facial',
@@ -42,6 +45,7 @@ export const treatments: readonly Treatment[] = [
     image: facialHarmonization,
     tone: 'white',
     imageSide: 'left',
+    destination: { type: 'mode', mode: 'harmonizacao' },
   },
   {
     id: 'emagrecimento',
@@ -54,6 +58,7 @@ export const treatments: readonly Treatment[] = [
     image: weightLoss,
     tone: 'gold',
     imageSide: 'right',
+    destination: { type: 'mode', mode: 'emagrecimento' },
   },
   {
     id: 'estetica-em-geral',
@@ -67,5 +72,6 @@ export const treatments: readonly Treatment[] = [
     tone: 'dark',
     imageSide: 'left',
     hasMedallion: true,
+    destination: { type: 'external', href: externalLinks.whatsapp },
   },
 ]

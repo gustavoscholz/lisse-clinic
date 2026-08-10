@@ -6,12 +6,20 @@ import decorRingCenter from '../assets/treatments/decor-ring-center.svg'
 import decorRingLeft from '../assets/treatments/decor-ring-left.svg'
 import decorRingRight from '../assets/treatments/decor-ring-right.svg'
 import brandMark from '../assets/hero/brand-mark.svg'
-import { externalLinks, treatmentSpecialties } from '../data/site'
+import {
+  externalLinks,
+  treatmentSpecialties,
+  type SpecialtyMode,
+} from '../data/site'
 import { treatments } from '../data/treatments'
 import { SpecialtyRail } from './SpecialtyRail'
 import { TreatmentCard } from './TreatmentCard'
 
-export function Treatments() {
+type TreatmentsProps = {
+  onNavigate: (mode: SpecialtyMode) => void
+}
+
+export function Treatments({ onNavigate }: TreatmentsProps) {
   return (
     <section
       id="tratamentos"
@@ -43,7 +51,11 @@ export function Treatments() {
 
         <div className="treatments-section__cards">
           {treatments.map((treatment) => (
-            <TreatmentCard treatment={treatment} key={treatment.id} />
+            <TreatmentCard
+              treatment={treatment}
+              onNavigate={onNavigate}
+              key={treatment.id}
+            />
           ))}
         </div>
 

@@ -67,6 +67,7 @@ export const treatmentSpecialties = [
 export const externalLinks = {
   whatsapp:
     'https://api.whatsapp.com/message/FQ6YGEHPMXHSM1?autoload=1&app_absent=0&utm_source=ig',
+  instagram: 'https://www.instagram.com/lisseclinic/',
   googleReviews:
     'https://www.google.com/search?q=Lisse+Clinic+avalia%C3%A7%C3%B5es',
   googleMaps:

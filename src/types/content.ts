@@ -9,6 +9,15 @@ export interface Treatment {
   tone: 'dark-gradient' | 'cream' | 'white' | 'gold' | 'dark'
   imageSide: 'left' | 'right'
   hasMedallion?: boolean
+  destination:
+    | {
+        type: 'mode'
+        mode: 'harmonizacao' | 'faloplastia' | 'emagrecimento'
+      }
+    | {
+        type: 'external'
+        href: string
+      }
 }
 
 export interface TeamMember {

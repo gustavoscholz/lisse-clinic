@@ -1,13 +1,17 @@
 import separatorMark from '../assets/hero/separator-mark.png'
 import cardMarkGold from '../assets/treatments/card-mark-gold.svg'
 import cardMedallion from '../assets/treatments/logo-cards.png'
+import type { SpecialtyMode } from '../data/site'
 import type { Treatment } from '../types/content'
 
 type TreatmentCardProps = {
   treatment: Treatment
+  onNavigate: (mode: SpecialtyMode) => void
 }
 
-function TreatmentImage({ treatment }: TreatmentCardProps) {
+function TreatmentImage({
+  treatment,
+}: Pick<TreatmentCardProps, 'treatment'>) {
   return (
     <div className="treatment-card__image">
       <img src={treatment.image} alt={`Atendimento de ${treatment.eyebrow}`} />
@@ -15,7 +19,30 @@ function TreatmentImage({ treatment }: TreatmentCardProps) {
   )
 }
 
-function TreatmentCopy({ treatment }: TreatmentCardProps) {
+function TreatmentCopy({ treatment, onNavigate }: TreatmentCardProps) {
+  const { destination } = treatment
+  const exploreControl =
+    destination.type === 'mode' ? (
+      <button
+        className="treatment-card__explore"
+        type="button"
+        onClick={() => onNavigate(destination.mode)}
+        aria-label={`Explorar ${treatment.eyebrow}`}
+      >
+        Explorar especialidade
+      </button>
+    ) : (
+      <a
+        className="treatment-card__explore"
+        href={destination.href}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={`Conversar sobre ${treatment.eyebrow} pelo WhatsApp`}
+      >
+        Explorar especialidade
+      </a>
+    )
+
   return (
     <div className="treatment-card__copy">
       <p className="treatment-card__eyebrow">{treatment.eyebrow}</p>
@@ -38,16 +65,14 @@ function TreatmentCopy({ treatment }: TreatmentCardProps) {
           <span key={tag}>{tag}</span>
         ))}
       </div>
-      <span className="treatment-card__explore" aria-disabled="true">
-        Explorar especialidade
-      </span>
+      {exploreControl}
     </div>
   )
 }
 
-export function TreatmentCard({ treatment }: TreatmentCardProps) {
+export function TreatmentCard({ treatment, onNavigate }: TreatmentCardProps) {
   const image = <TreatmentImage treatment={treatment} />
-  const copy = <TreatmentCopy treatment={treatment} />
+  const copy = <TreatmentCopy treatment={treatment} onNavigate={onNavigate} />
 
   return (
     <article
